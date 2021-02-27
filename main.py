@@ -1,8 +1,15 @@
 import random as Random
 
+
 list1 = [1, 2, 3, 4]
 list2 = [5, 6, 7, 8]
 globalPositions = []
+globalMatrizHidden = [
+    ["*", "*", "*", "*"],
+    ["*", "*", "*", "*"],
+    ["*", "*", "*", "*"],
+    ["*", "*", "*", "*"]
+]
 
 
 def getMatriz(matriz: list = []):
@@ -37,6 +44,19 @@ def showMatriz():
     print(matrizString)
     pass
 
+def setValueInHidden(rowColumn: [], value):
+    matrizString = ""
+    matrizHidden = globalMatrizHidden
+    matrizHidden[rowColumn[0]][rowColumn[1]] = value
+
+    for index in range(4):
+        for subIndex in range(4):
+            matrizString += F"{matrizHidden[index][subIndex]} "
+        matrizString += "\n"
+        
+    print(matrizString)
+    pass
 
 mainMatriz = getMatriz()
-showMatriz()
+#showMatriz()
+setValueInHidden([0,1], 3)
