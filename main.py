@@ -4,7 +4,7 @@ list1 = [1, 2, 3, 4]
 list2 = [5, 6, 7, 8]
 globalPositions = []
 
-def fillMatriz(matriz: list = []):
+def getMatriz(matriz: list = []):
     mainMatriz = [[], [], [], []]
     position = 0
     for index in range(4):
@@ -26,5 +26,5 @@ def getPosition():
     return position
 
 
-mainMatriz = fillMatriz()
+mainMatriz = getMatriz()
 print(mainMatriz)
