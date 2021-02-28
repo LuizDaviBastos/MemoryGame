@@ -3,6 +3,12 @@ import random as Aleatorio
 lista1 = [1, 2, 3, 4]
 lista2 = [5, 6, 7, 8]
 posicoesGlobais = []
+globalMatrizOcultaFixada = [
+    ["*", "*", "*", "*"],
+    ["*", "*", "*", "*"],
+    ["*", "*", "*", "*"],
+    ["*", "*", "*", "*"]
+]
 globalMatrizOculta = [
     ["*", "*", "*", "*"],
     ["*", "*", "*", "*"],
@@ -40,6 +46,11 @@ def obterPosicaoUnica():
 
 
 def configurarMatrizOculta(linhaColuna: [] = [], value=0):
+    global globalMatrizOculta
+    global globalMatrizOcultaFixada
+
+    globalMatrizOculta = globalMatrizOcultaFixada
+
     matrizStr = ""
     if linhaColuna.__len__() > 0:
         linhaColuna = linhaColuna.replace("[", "").replace("]", "").split(",")
@@ -95,8 +106,10 @@ def rodada():
         print(matrizOcultaStr)
         return valor
 
+
     def segundaJogada():
         global matrizOcultaStr
+        global jogadas
         posicao = input("Escolha a segunda posição\n")
         valido = eValido(posicao)
         while valido != "":
@@ -110,7 +123,6 @@ def rodada():
 
     primeiroValor = primeiraJogada()
     segundoValor = segundaJogada()
-    global jogadas
     jogadas = jogadas + 1
     return (primeiroValor == segundoValor)
 
@@ -128,8 +140,8 @@ def reinciarMatrizOculta():
 
 
 def ganhou():
-    ganhou = True
     global globalMatrizOculta
+    ganhou = True
     for linha in globalMatrizOculta:
         for coluna in linha:
             if type(coluna) is not int and coluna.replace(" ", "") == "*":
@@ -139,22 +151,23 @@ def ganhou():
 
 
 def jogo():
+    global matriz
     global globalMatrizOculta
+    global globalMatrizOcultaFixada
     global jogadas
+    matriz = obterMatrizAleatoria()
     while not ganhou():
+        print(matriz)
         acertou = rodada()
         if acertou:
             print("Parabens! você acertou")
+            globalMatrizOcultaFixada = globalMatrizOculta
         else:
             print("Você errou... tente de novo.")
             reinciarMatrizOculta()
-
-        print(globalMatrizOculta)
-
+        
     if ganhou():
         print("Você conseguiu descobrir todos os pares. Parabéns!")
         print(f"Número de jogadas: {jogadas}")
 
-
-matriz = obterMatrizAleatoria()
 jogo()
