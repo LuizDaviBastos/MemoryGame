@@ -1,17 +1,16 @@
 import random as Aleatorio
 
-
 lista1 = [1, 2, 3, 4]
 lista2 = [5, 6, 7, 8]
 posicoesGlobais = []
-globalMatrizHidden = [
+globalMatrizOculta = [
     ["*", "*", "*", "*"],
     ["*", "*", "*", "*"],
     ["*", "*", "*", "*"],
     ["*", "*", "*", "*"]
 ]
 matriz = []
-matrizOculta: str
+matrizOcultaStr: str
 jogadas = 0
 
 
@@ -40,34 +39,32 @@ def obterPosicaoUnica():
     return posicao
 
 
-def configurarMatrizOculta(rowColumn: [] = [], value=0):
-    matrizString = ""
-    #matrizHidden = globalMatrizHidden
+def configurarMatrizOculta(linhaColuna: [] = [], value=0):
+    matrizStr = ""
+    if linhaColuna.__len__() > 0:
+        linhaColuna = linhaColuna.replace("[", "").replace("]", "").split(",")
+        globalMatrizOculta[int(linhaColuna[0])][int(linhaColuna[1])] = value
 
-    if rowColumn.__len__() > 0:
-        rowColumn = rowColumn.replace("[", "").replace("]", "").split(",")
-        globalMatrizHidden[int(rowColumn[0])][int(rowColumn[1])] = value
-
-    for index in range(4):
-        for subIndex in range(4):
-            matrizString += F"{globalMatrizHidden[index][subIndex]} "
-        matrizString += "\n"
-    return matrizString
+    for indice in range(4):
+        for subIndice in range(4):
+            matrizStr += F"{globalMatrizOculta[indice][subIndice]} "
+        matrizStr += "\n"
+    return matrizStr
 
 
-def obterValorMatriz(position: [], matriz):
-    position = position.replace("[", "").replace("]", "").split(",")
-    return matriz[int(position[0])][int(position[1])]
+def obterValorMatriz(posicao: [], matriz):
+    posicao = posicao.replace("[", "").replace("]", "").split(",")
+    return matriz[int(posicao[0])][int(posicao[1])]
 
 
-def isValid(posicao):
-    global globalMatrizHidden
+def eValido(posicao):
+    global globalMatrizOculta
     posicao = posicao.replace("[", "").replace("]", "").split(",")
     valido = False
 
     if (type(posicao) is list and posicao.__len__() == 2 and int(posicao[0]) <= 3 and int(posicao[1]) <= 3):
-        value = globalMatrizHidden[int(posicao[0])][int(posicao[1])]
-        if (type(value) is not int and value.replace(" ", "") == "*"):
+        valor = globalMatrizOculta[int(posicao[0])][int(posicao[1])]
+        if (type(valor) is not int and valor.replace(" ", "") == "*"):
             valido = ""
         else:
             valido = "Posição já escolhida."
@@ -82,33 +79,33 @@ def rodada():
 
     def primeiraJogada():
         global jogadas
-        global matrizOculta
+        global matrizOcultaStr
         if jogadas <= 0:
-            matrizOculta = configurarMatrizOculta()
+            matrizOcultaStr = configurarMatrizOculta()
 
-        print(matrizOculta)
+        print(matrizOcultaStr)
         posicao = input("Escolha a primeira posição\n")
-        valido = isValid(posicao)
+        valido = eValido(posicao)
         while valido != "":
             print(valido)
             posicao = input("Escolha a primeira posição\n")
-            valido = isValid(posicao)
+            valido = eValido(posicao)
         valor = obterValorMatriz(posicao, matriz)
-        matrizOculta = configurarMatrizOculta(posicao, valor)
-        print(matrizOculta)
+        matrizOcultaStr = configurarMatrizOculta(posicao, valor)
+        print(matrizOcultaStr)
         return valor
 
     def segundaJogada():
-        global matrizOculta
+        global matrizOcultaStr
         posicao = input("Escolha a segunda posição\n")
-        valido = isValid(posicao)
+        valido = eValido(posicao)
         while valido != "":
             print(valido)
             posicao = input("Escolha a segunda posição\n")
-            valido = isValid(posicao)
+            valido = eValido(posicao)
         valor = obterValorMatriz(posicao, matriz)
-        matrizOculta = configurarMatrizOculta(posicao, valor)
-        print(matrizOculta)
+        matrizOcultaStr = configurarMatrizOculta(posicao, valor)
+        print(matrizOcultaStr)
         return valor
 
     primeiroValor = primeiraJogada()
@@ -119,30 +116,30 @@ def rodada():
 
 
 def reinciarMatrizOculta():
-    global globalMatrizHidden
-    global matrizOculta
+    global globalMatrizOculta
+    global matrizOcultaStr
     matrizString = ""
     for index in range(4):
         for subIndex in range(4):
-            globalMatrizHidden[index][subIndex] = "*"
+            globalMatrizOculta[index][subIndex] = "*"
             matrizString += F"* "
         matrizString += "\n"
-    matrizOculta = matrizString
+    matrizOcultaStr = matrizString
 
 
 def ganhou():
     ganhou = True
-    global globalMatrizHidden
-    for row in globalMatrizHidden:
-        for column in row:
-            if type(column) is not int and column.replace(" ", "") == "*":
+    global globalMatrizOculta
+    for linha in globalMatrizOculta:
+        for coluna in linha:
+            if type(coluna) is not int and coluna.replace(" ", "") == "*":
                 ganhou = False
                 break
     return ganhou
 
 
 def jogo():
-    global globalMatrizHidden
+    global globalMatrizOculta
     global jogadas
     while not ganhou():
         acertou = rodada()
@@ -152,7 +149,7 @@ def jogo():
             print("Você errou... tente de novo.")
             reinciarMatrizOculta()
 
-        print(globalMatrizHidden)
+        print(globalMatrizOculta)
 
     if ganhou():
         print("Você conseguiu descobrir todos os pares. Parabéns!")
@@ -160,5 +157,4 @@ def jogo():
 
 
 matriz = obterMatrizAleatoria()
-print(matriz)
 jogo()
