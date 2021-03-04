@@ -21,7 +21,7 @@ jogadas = 0
 
 
 def obterMatrizAleatoria():
-    #Retorna uma matriz 4x4, contendo 8 pares de numeros (de 1 a 8)
+    # Retorna uma matriz 4x4, contendo 8 pares de numeros (de 1 a 8)
     matrizPrincipal = [[], [], [], []]
     posicao = 0
     for indice in range(4):
@@ -87,10 +87,12 @@ def eValido(posicao):
 def rodada():
     primeiroValor = 0
     segundoValor = 0
+    global jogadas
 
     def primeiraJogada():
         global jogadas
         global matrizOcultaStr
+        global jogadas
         if jogadas <= 0:
             matrizOcultaStr = configurarMatrizOculta()
 
@@ -153,7 +155,7 @@ def jogo():
     global matriz
     global globalMatrizOculta
     global globalMatrizOcultaFixada
-    global jogadas
+
     matriz = obterMatrizAleatoria()
     while not ganhou():
         #print(matriz)
@@ -164,9 +166,10 @@ def jogo():
         else:
             print("Você errou... tente de novo.")
             reinciarMatrizOculta()
-        
+
     if ganhou():
         print("Você conseguiu descobrir todos os pares. Parabéns!")
         print(f"Número de jogadas: {jogadas}")
+
 
 jogo()
